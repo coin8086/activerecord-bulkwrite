@@ -41,7 +41,7 @@ rows = [
 result = User.bulk_write(fields, rows)
 ```
 
-The values of rows are sent to database as-is, and their to_s method is called when necessary. Here you need to pay attention to datetime values: it must be in UTC time, not in local time, since there's no time zone conversion.
+The values of rows are sent to database as-is, and their to_s method is called when necessary. So here you need to *pay attention to datetime values: it must be in UTC time, not in local time*, since there's no time zone conversion.
 
 ## Bulk Upsert
 
