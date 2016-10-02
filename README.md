@@ -32,8 +32,8 @@ require "activerecord/bulkwrite"
 
 fields = %w(id name hireable created_at)
 rows = [
-  [1, "Bob's", true, now - 10],
-  [2, nil, "false", (now - 1).utc.iso8601],
+  [1, "Bob's", true, Time.now.utc],
+  [2, nil, "false", Time.now.utc.iso8601],
   # ...
 ]
 
