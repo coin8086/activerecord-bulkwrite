@@ -1,8 +1,10 @@
+中文文档请看这里：http://ask.githuber.cn/t/activerecord-bulk-write/1723
+---
 # activerecord-bulkwrite
 Bulk write/upsert for ActiveRecord!
 
-# Requirements
-It requires PostgreSQL 9.5 and higher for upsert, but doesn't require it for insert-only. See below for examples of upsert and insert-only.
+# Requirement
+PostgreSQL 9.5 and higher
 
 # Installation
 
@@ -12,9 +14,9 @@ gem install activerecord-bulkwrite
 
 # Usage
 
-Suppose there's a table definition
+Suppose a table definition:
 
-```
+```ruby
 create table users (
   id integer primary key,
   name text,
@@ -25,9 +27,9 @@ create table users (
 )
 ```
 
-## Bulk Insert-only
+## Bulk Insert
 
-```
+```ruby
 require "activerecord/bulkwrite"
 
 fields = %w(id name hireable created_at)
@@ -45,16 +47,25 @@ The values of rows are sent to database as-is, and their to_s method is called w
 
 ## Bulk Upsert
 
-When you do upsert, you pass the 3rd parameter `upsert`:
+You do upsert like:
 
-```
-require "activerecord/bulkwrite"
-
-upsert = { :conflict => [:id] }
-result = User.bulk_write(fields, rows, :upsert => upsert)
+```ruby
+result = User.bulk_write(fields, rows, :conflict => [:id])
 ```
 
-The only required field of upsert is conflict. See comment in code for more of the parameter's meanings. If you know PostgreSQL 9.5's upsert syntax, you understand it even more. Here it is: https://www.postgresql.org/docs/9.5/static/sql-insert.html#SQL-ON-CONFLICT
+The statement above reinserted `rows` and thus failed on unique violation. But this time we specified an `:conflict` option meaning when the given fields conflict then do update with the rest fields. We can also explicitly specify the fields to update:
+
+```ruby
+result = User.bulk_write(fields, rows, :conflict => [:id],  :update => %w(name created_at))
+```
+
+We can even specify conditions under which to do update:
+
+```ruby
+result = User.bulk_write(fields, rows, :conflict => [:id],  :where => "users.hireable = TRUE"))
+```
+
+The upsert function depends on PostgreSQL 9.5's upsert. See here for more: https://www.postgresql.org/docs/9.5/static/sql-insert.html#SQL-ON-CONFLICT
 
 # Compatible Rails Versions and Test
 It's tested against ActiveRecord 4.2, but should work on 4.x as well as 5. See the gist for a test example: https://gist.github.com/coin8086/a66c5f1a706b3981d1bdbe2cb7ff154d.
