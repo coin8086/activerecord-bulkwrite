@@ -68,4 +68,4 @@ result = User.bulk_write(fields, rows, :conflict => [:id],  :where => "users.hir
 The upsert function depends on PostgreSQL 9.5's upsert. See here for more: https://www.postgresql.org/docs/9.5/static/sql-insert.html#SQL-ON-CONFLICT
 
 # Compatible Rails Versions and Test
-It's tested against ActiveRecord 4.2, but should work on 4.x as well as 5. See the gist for a test example: https://gist.github.com/coin8086/a66c5f1a706b3981d1bdbe2cb7ff154d.
+It's tested against ActiveRecord 4.2, but should also work on 4.x as well as 5.
