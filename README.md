@@ -1,10 +1,17 @@
 中文文档请看这里：http://ask.githuber.cn/t/activerecord-bulk-write/1723
 ---
+
 # activerecord-bulkwrite
-Bulk write/upsert for ActiveRecord!
+Bulk write/upsert for ActiveRecord! 
+
+ActiveRecord has no native support for bulk insert and it's very inefficient to insert bulk of rows into database by loops of `Model#create`, even with a transaction outside the loops. The best way to do bulk insert is to build a SQL statement:
+```sql
+INSERT INTO table_name (col1, col2, col3, ...) VALUES (v11, v12, v13, ...), (v21, v22, v23, ...), ...
+```
+It's about 100 times faster than loops of `Model#create`! This Gem is a helper for you to build such a sql statement. What's more, it also suppports *upsert*, that is to try to insert first, and if that fails, then do update.
 
 # Requirement
-PostgreSQL 9.5 and higher
+PostgreSQL 9.5 and higher, since it depends on PostgreSQL 9.5's upsert feature.
 
 # Installation
 
@@ -47,8 +54,6 @@ The values of rows are sent to database as-is, and their to_s method is called w
 
 ## Bulk Upsert
 
-You do upsert like:
-
 ```ruby
 result = User.bulk_write(fields, rows, :conflict => [:id])
 ```
@@ -65,7 +70,14 @@ We can even specify conditions under which to do update:
 result = User.bulk_write(fields, rows, :conflict => [:id],  :where => "users.hireable = TRUE"))
 ```
 
-The upsert function depends on PostgreSQL 9.5's upsert. See here for more: https://www.postgresql.org/docs/9.5/static/sql-insert.html#SQL-ON-CONFLICT
+In fact, activerecord-bulkwrite's upsert depends on [PostgreSQL 9.5's upsert](https://www.postgresql.org/docs/9.5/static/sql-insert.html#SQL-ON-CONFLICT):
+
+```sql
+INSERT INTO table_name (col1, col2, col3, ...) VALUES (v11, v12, v13), (v21, v22, v23), ...
+ON CONFLICT (colX, colY, ...) DO UPDATE
+SET colA = ..., colB = ..., ...
+WHERE ...
+```
 
 # Compatible Rails Versions and Test
 It's tested against ActiveRecord 4.2, but should also work on 4.x as well as 5.
