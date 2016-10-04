@@ -8,7 +8,7 @@ ActiveRecord has no native support for bulk insert and it's very inefficient to 
 ```sql
 INSERT INTO table_name (col1, col2, col3, ...) VALUES (v11, v12, v13, ...), (v21, v22, v23, ...), ...
 ```
-It's about 100 times faster than loops of `Model#create`! This Gem is a helper for you to build such a sql statement - it takes care of type conversion and quoting for database. What's more, it also suppports *upsert*, that is to try to insert first, and if that fails, then do update.
+It's about 100 times faster than loops of `Model#create`! This Gem is a helper for you to build such a sql statement - it takes care of type conversion and quoting for database. What's more, it suppports *upsert*, that is to try to insert first, and if that fails, then do update.
 
 # Requirement
 PostgreSQL 9.5 and higher, since it depends on PostgreSQL 9.5's upsert feature.
