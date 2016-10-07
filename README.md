@@ -1,4 +1,4 @@
-中文：https://huiming.io/2016/10/03/activerecord-bulkwrite.html
+中文：http://huiming.io/2016/10/03/activerecord-bulkwrite.html
 ---
 
 # activerecord-bulkwrite
