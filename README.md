@@ -1,4 +1,4 @@
-中文文档请看这里：http://ask.githuber.cn/t/activerecord-bulk-write/1723
+中文：https://huiming.io/2016/10/03/activerecord-bulkwrite.html
 ---
 
 # activerecord-bulkwrite
